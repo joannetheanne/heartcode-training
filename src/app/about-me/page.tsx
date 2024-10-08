@@ -6,12 +6,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
           Hello world this is the about me route
           <Card>
               <CardHeader>
-                  <CardTitle>
-                      Hello I am joanne
-                  </CardTitle>
-                  <CardDescription>
-                      I hate coding....
-                  </CardDescription>
+              <img 
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZLEqFDeM3iy8OUMpmTrShak0UoQ2vcoL_A&s" 
+                className="w-25 h-23 mb-2" 
+              />
+              <CardTitle>
+                  Hello I am joanne
+              </CardTitle>
+              <CardDescription>
+                  I hate coding....
+              </CardDescription>
               </CardHeader>
               <CardContent>
                   <div className="flex flex-row gap-2">
