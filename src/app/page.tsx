@@ -12,17 +12,16 @@ export default function Home() {
       <div className="">
         {/* <div className="flex flex-col h-[calc(100vh-60px)] items-center justify-center"> */}
         <div className="flex flex-col justify-center h-dvh">  
-          <p className="font-bold text-5xl text-center">
-            Are you trying to  
+          <h1 className="font-bold text-5xl text-center"> Are you trying to  
             <FlipWords words={words}/>
-          </p> <br/>
+          </h1> <br/>
           <p className="text-sm text-center animate-bounce"> Then don't do drugs. </p>
         </div>
       </div>
 
       <div className="flex flex-col justify-center items-center h-screen bg-purple-100 bg-cover bg-center" style={{ backgroundImage: "url('https://media.licdn.com/dms/image/v2/C4E12AQHyoC2afGaEuw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1520130454351?e=1733961600&v=beta&t=1ePaqLtG_3O9nmm8sf-QI5ZQKdONNx9stLZ-gpclEBA')" }}>
-      <p className="font-bold text-left text-3xl mb-4"> Commonly Abused Drugs in Singapore </p>
-      <table className="border border-gray-300 bg-gray-200 w-full max-w-4xl mt-4">
+        <p className="font-bold text-left text-3xl mb-4"> Commonly Abused Drugs in Singapore </p>
+          <table className="border border-gray-300 bg-gray-200 w-full max-w-4xl mt-4">
             <tbody>
               <tr>
                 <td className="font-bold py-2 px-4 border-b text-black">Cannabis</td>
@@ -87,7 +86,6 @@ export default function Home() {
         <em>If you wish to report any information, please call the Central Narcotics Bureau (CNB) hotline at 1800 325 6666*.</em>
         </p>
       </div>
-      
   </div>
   );
 }
