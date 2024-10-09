@@ -1,102 +1,122 @@
 "use client"
 
-import { z } from "zod"
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+import { z } from "zod";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }).max(10, {
-    message: "Username must be below 11 characters."
-  }),
-  question1: z.coerce.number({
-    required_error: "number is required"
+const FormSchema = z.object({
+	name: z.string({
+    	required_error: "Please enter a name"
+	}).min(2, {
+    	message: "name must be more than 2 characters long"
+	}).max(20, {
+    	message: "name must be no longer than 20 characters"
+	}),
+	question2: z.string({
+    	required_error: "Please select an option"
+	}),
+  question3: z.string({
+    required_error: "Please select an option"
   })
 })
 
 export default function Quiz() {
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-    },
-  })
- 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+	const { toast } = useToast();
+
+	const form = useForm<z.infer<typeof FormSchema>>({
+    	resolver: zodResolver(FormSchema)
+	})
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    let description = "";
+
+    if (data.question2 === "yes") {
+        description = "You are a drug dealer";
+        if (data.question3 === "yes") {
+            description += " and are involved in drug trafficking";
+        } else if (data.question3 === "no") {
+            description += ", but not involved in drug trafficking";
+        }
+    } else {
+        description = "Unfortunately you are not a drug dealer";
+    }
+
+    // Single Toast with Combined Message
+    toast({
+        title: `Thank you ${data.name}`,
+        description: description,
+    });
   }
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="question1"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Question 1</FormLabel>
-              <FormControl>
-                <Input type="number" placeholder="Answer here" {...field} />
-              </FormControl>
-              <FormDescription>
-                What is the maximum amount of marijuana you can carry before the death penalty
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* <FormField
-          control={form.control}
-          name="question1"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Question2</FormLabel>
-              <FormControl>
-                <Input placeholder="Answer here" {...field} />
-              </FormControl>
-              <FormDescription>
-              What is one of the commonly abused drugs in Singapore?
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
+	return (
+    	<Form {...form}>
+        	<form onSubmit={form.handleSubmit(onSubmit)} className="w2/3 space-y-6">
+            	<FormField
+                	control={form.control}
+                	name="name"
+                	render={({ field }) => (
+                    	<FormItem>
+                        	<FormLabel>Question 1:</FormLabel>
+                        	<FormDescription>What is your name?</FormDescription>
+                            	<FormControl>
+                                	<Input placeholder="your name here" {...field}/>
+                            	</FormControl>
+                        	<FormMessage/>
+                    	</FormItem>
+                	)}
+            	/>
+            	<FormField
+                	control={form.control}
+                	name="question3"
+                	render={({ field }) => (
+                    	<FormItem>
+                        	<FormLabel>Question 2:</FormLabel>
+                        	<FormDescription>Do you sell drugs?</FormDescription>
+                        	<Select onValueChange={field.onChange} defaultValue={field.value}>
+                            	<FormControl>
+                                	<SelectTrigger>
+                                    	<SelectValue placeholder="Please select an answer"/>
+                                	</SelectTrigger>
+                            	</FormControl>
+                            	<SelectContent>
+                                	<SelectItem value="yes">Yes</SelectItem>
+                                	<SelectItem value="no">No</SelectItem>
+                            	</SelectContent>
+                        	</Select>
+                        	<FormMessage/>
+                    	</FormItem>
+                	)}
+            	/>
+              <FormField
+                	control={form.control}
+                	name="question2"
+                	render={({ field }) => (
+                    	<FormItem>
+                        	<FormLabel>Question 3:</FormLabel>
+                        	<FormDescription>Do you consume drugs?</FormDescription>
+                        	<Select onValueChange={field.onChange} defaultValue={field.value}>
+                            	<FormControl>
+                                	<SelectTrigger>
+                                    	<SelectValue placeholder="Please select an answer"/>
+                                	</SelectTrigger>
+                            	</FormControl>
+                            	<SelectContent>
+                                	<SelectItem value="yes">Yes</SelectItem>
+                                	<SelectItem value="no">No</SelectItem>
+                            	</SelectContent>
+                        	</Select>
+                        	<FormMessage/>
+                    	</FormItem>
+                	)}
+            	/>
 
-
-
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
-  );
+            	<Button type="submit">Submit</Button>
+        	</form>
+    	</Form>
+	)
 }
