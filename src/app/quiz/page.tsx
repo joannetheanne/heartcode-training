@@ -37,16 +37,17 @@ export default function Quiz() {
 
     if (data.question2 === "yes") {
         description = "You are a drug dealer";
+        
         if (data.question3 === "yes") {
             description += " and are involved in drug trafficking";
         } else if (data.question3 === "no") {
             description += ", but not involved in drug trafficking";
         }
-    } else {
+    } else if (data.question2 === "no") {
         description = "Unfortunately you are not a drug dealer";
     }
 
-    // Single Toast with Combined Message
+    // Display the combined result in a single toast
     toast({
         title: `Thank you ${data.name}`,
         description: description,
@@ -72,7 +73,7 @@ export default function Quiz() {
             	/>
             	<FormField
                 	control={form.control}
-                	name="question3"
+                	name="question2"
                 	render={({ field }) => (
                     	<FormItem>
                         	<FormLabel>Question 2:</FormLabel>
@@ -94,7 +95,7 @@ export default function Quiz() {
             	/>
               <FormField
                 	control={form.control}
-                	name="question2"
+                	name="question3"
                 	render={({ field }) => (
                     	<FormItem>
                         	<FormLabel>Question 3:</FormLabel>
