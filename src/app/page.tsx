@@ -2,15 +2,10 @@ import { FlipWords } from "@/components/ui/flip-words";
 
 export default function Home() {
   const words: string[] = ["be cool?", "be a YP?", "disappoint your loved ones?"];
+
   return(
     <div>
-      {/* <div className="flex flex-col justify-center h-screen">
-        <p className="font-bold text-5xl text-center animate-bounce"> Don't do Drugs </p>
-        <p className="text-sm text-center"> Drugs are bad </p>
-      </div>  */}
-
       <div className="">
-        {/* <div className="flex flex-col h-[calc(100vh-60px)] items-center justify-center"> */}
         <div className="flex flex-col justify-center h-dvh">  
           <h1 className="font-bold text-5xl text-center"> Are you trying to  
             <FlipWords words={words}/>

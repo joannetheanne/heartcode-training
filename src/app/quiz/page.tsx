@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { insertOneUser } from "../server/user";
 
 const FormSchema = z.object({
 	name: z.string({
@@ -20,9 +21,9 @@ const FormSchema = z.object({
 	question2: z.string({
     	required_error: "Please select an option"
 	}),
-  question3: z.string({
-    required_error: "Please select an option"
-  })
+	question3: z.string({
+		required_error: "Please select an option"
+	})
 })
 
 export default function Quiz() {
@@ -32,7 +33,7 @@ export default function Quiz() {
     	resolver: zodResolver(FormSchema)
 	})
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     let description = "";
 
     if (data.question2 === "yes") {
@@ -52,6 +53,27 @@ export default function Quiz() {
         title: `Thank you ${data.name}`,
         description: description,
     });
+
+	// const isDrugDealer = true ? data.question2 === "yes": false; 
+	// const isDrugTrafficker = true ? data.question3 === "yes": false;
+	// await insertOneUser(data.name, isDrugDealer, isDrugTrafficker);
+
+	let isDrugDealer;
+	let isDrugTrafficker;
+
+	if (data.question2 === "yes") {
+		isDrugDealer = true;
+	} else {
+		isDrugDealer = false;
+	}
+
+	if (data.question3 === "yes") {
+		isDrugTrafficker = true;
+	} else {
+		isDrugTrafficker = false;
+	}
+
+	await insertOneUser(data.name, isDrugDealer, isDrugTrafficker);
   }
 
 	return (
