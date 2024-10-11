@@ -1,7 +1,30 @@
+"use client";
+
 import { FlipWords } from "@/components/ui/flip-words";
+import { useState } from 'react';
 
 export default function Home() {
   const words: string[] = ["be cool?", "be a YP?", "disappoint your loved ones?"];
+
+  // Array of video objects with titles and IDs
+  const videos = [
+    { id: '3tMcX3jh5I4', title: 'Last Days' },
+    { id: 'nU-7qA9xNlA', title: 'Unattended' },
+    { id: 'c0WRBbFe668', title: 'Teaching Video on Anti-Drug Abuse' }
+  ];
+  
+  // State to track the current video index
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
+  // Function to go to the next video
+  const nextVideo = () => {
+    setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
+  };
+
+  // Function to go to the previous video
+  const prevVideo = () => {
+    setCurrentVideoIndex((prevIndex) => (prevIndex - 1 + videos.length) % videos.length);
+  };
 
   return(
     <div>
@@ -62,7 +85,42 @@ export default function Home() {
             </tbody>
           </table>
       </div>
-  
+
+      {/* New Video Section */}
+      <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
+        <h2 className="font-bold text-4xl text-center text-gray-800 mb-6">
+          More about Drug Abuse...
+        </h2>
+        <p className="font-bold text-3xl text-center text-gray-800 mb-4">{videos[currentVideoIndex].title}</p>
+        <div className="flex items-center">
+          {/* Previous Button */}
+          <button 
+            onClick={prevVideo} 
+             className="px-4 py-2 text-xl bg-gray-800 text-white rounded hover:bg-gray-700"
+          >
+            &lt; {/* Left Arrow */}
+          </button>
+
+          <iframe 
+            style={{ width: '800px', height: '350px' }}
+            className="mx-4"
+            src={`https://www.youtube.com/embed/${videos[currentVideoIndex].id}`} 
+            title="YouTube video player" 
+            frameBorder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowFullScreen>
+          </iframe>
+
+          {/* Next Button */}
+          <button 
+            onClick={nextVideo} 
+             className="px-4 py-2 text-xl bg-gray-800 text-white rounded hover:bg-gray-700"
+          >
+            &gt; {/* Right Arrow */}
+          </button>
+        </div>
+      </div>
+
       <div className="flex flex-col justify-center items-center h-screen bg-blue-100">
         <p className="font-bold text-3xl text-center text-blue-800 mb-4">Get Help</p>
         <p className="text-md text-center text-gray-800 max-w-md">

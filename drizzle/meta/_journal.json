@@ -8,6 +8,13 @@
       "when": 1728528248473,
       "tag": "0000_orange_the_captain",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1728616548207,
+      "tag": "0001_misty_firebird",
+      "breakpoints": true
     }
   ]
 }

@@ -7,4 +7,5 @@ export const users = createTable("user", {
     name: varchar("name", {length: 32}).notNull(),
     isDrugDealer: boolean().notNull(),
     isDrugTrafficker: boolean().notNull(),
+    needHelp: boolean().notNull(),
 })

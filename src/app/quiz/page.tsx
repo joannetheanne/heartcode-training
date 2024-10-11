@@ -23,6 +23,9 @@ const FormSchema = z.object({
 	}),
 	question3: z.string({
 		required_error: "Please select an option"
+	}),
+	question4: z.string({
+		required_error: "Please select an option"
 	})
 })
 
@@ -36,16 +39,37 @@ export default function Quiz() {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     let description = "";
 
+    // if (data.question2 === "yes") {
+    //     description = "You are a drug dealer";
+        
+    //     if (data.question3 === "yes") {
+    //         description += " and are involved in drug trafficking";
+    //     } else if (data.question3 === "no") {
+    //         description += ", but not involved in drug trafficking";
+    //     }
+    // } else if (data.question2 === "no") {
+    //     description = "Unfortunately you are not a drug dealer";
+    // }
+
     if (data.question2 === "yes") {
         description = "You are a drug dealer";
         
         if (data.question3 === "yes") {
-            description += " and are involved in drug trafficking";
+            description += " and are involved in drug trafficking.";
         } else if (data.question3 === "no") {
-            description += ", but not involved in drug trafficking";
+            description += ", but not involved in drug trafficking.";
         }
+
+        if (data.question4 === "yes") {
+            description += `\nFor assistance, please visit this page: https://www.healthhub.sg/live-healthy/getting_support`;
+        } 
+        
     } else if (data.question2 === "no") {
         description = "Unfortunately you are not a drug dealer";
+
+        if (data.question4 === "yes") {
+            description += `\nFor assistance, please visit this page: https://www.healthhub.sg/live-healthy/getting_support`;
+        }
     }
 
     // Display the combined result in a single toast
@@ -54,12 +78,9 @@ export default function Quiz() {
         description: description,
     });
 
-	// const isDrugDealer = true ? data.question2 === "yes": false; 
-	// const isDrugTrafficker = true ? data.question3 === "yes": false;
-	// await insertOneUser(data.name, isDrugDealer, isDrugTrafficker);
-
 	let isDrugDealer;
 	let isDrugTrafficker;
+	let needHelp;
 
 	if (data.question2 === "yes") {
 		isDrugDealer = true;
@@ -73,7 +94,13 @@ export default function Quiz() {
 		isDrugTrafficker = false;
 	}
 
-	await insertOneUser(data.name, isDrugDealer, isDrugTrafficker);
+	if (data.question4 === "yes") {
+		needHelp = true;
+	} else {
+		needHelp = false;
+	}
+
+	await insertOneUser(data.name, isDrugDealer, isDrugTrafficker, needHelp);
   }
 
 	return (
@@ -138,7 +165,31 @@ export default function Quiz() {
                 	)}
             	/>
 
-            	<Button type="submit">Submit</Button>
+				<FormField
+                	control={form.control}
+                	name="question4"
+                	render={({ field }) => (
+                    	<FormItem>
+                        	<FormLabel>Question 4:</FormLabel>
+                        	<FormDescription>Do you need help to quit?</FormDescription>
+                        	<Select onValueChange={field.onChange} defaultValue={field.value}>
+                            	<FormControl>
+                                	<SelectTrigger>
+                                    	<SelectValue placeholder="Please select an answer"/>
+                                	</SelectTrigger>
+                            	</FormControl>
+                            	<SelectContent>
+                                	<SelectItem value="yes">Yes</SelectItem>
+                                	<SelectItem value="no">No</SelectItem>
+                            	</SelectContent>
+                        	</Select>
+                        	<FormMessage/>
+                    	</FormItem>
+                	)}
+            	/>
+
+				<div className="flex items-center justify-center">
+            	<Button type="submit">Submit</Button></div><br/>
         	</form>
     	</Form>
 	)
